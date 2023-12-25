@@ -33,10 +33,10 @@ const FormContainer = () => {
         {page === 2 && <Page2 />}
         {page === 3 && <Page3 />}
       </Card>
-      <Card>
+      <>
         <Button handleClick={handlePrevious} label={leftButton} />
         <Button handleClick={handleNext} label={rightButton} />
-      </Card>
+      </>
     </>
   );
 };

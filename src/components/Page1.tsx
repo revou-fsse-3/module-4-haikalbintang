@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "./Button";
 import Input from "./Input";
+import Card from "./Card";
 
 interface Data {
   fullName?: string;
@@ -12,16 +13,23 @@ const Page1 = () => {
   const [fullName, setFullName] = useState<string>();
   const [emailAddress, setEmailAdress] = useState<string>();
   const [dateOfBirth, setDateOfBirth] = useState<string>();
-  const [nextPage, setNextPage] = useState<Data[]>([]);
+  const [savedData, setSavedData] = useState<Data[]>([]);
 
-  const handleNext = () => {
+  const handleSubmit = () => {
     const obj = {
       fullName: fullName,
       emailAddress: emailAddress,
       dateOfBirth: dateOfBirth,
     };
+
+    setFullName("");
+    setEmailAdress("");
+    setDateOfBirth("");
+    setSavedData([...savedData, obj]);
     console.log(obj);
   };
+
+  const disabled = !fullName || !emailAddress || !dateOfBirth;
 
   return (
     <>
@@ -47,7 +55,13 @@ const Page1 = () => {
         value={dateOfBirth}
         onChange={setDateOfBirth}
       />
-      <Button label="Next" handleClick={handleNext} />
+      <Card>
+        <Button
+          label={"Submit this page"}
+          handleClick={handleSubmit}
+          disabled={disabled}
+        />
+      </Card>
     </>
   );
 };

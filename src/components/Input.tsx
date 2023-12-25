@@ -1,6 +1,6 @@
 interface Props {
-  variant: "single" | "multiple";
-  type: "text" | "number" | "email";
+  variant?: "single" | "multiple";
+  type?: "text" | "number" | "email";
   value?: string;
   onChange: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
