@@ -30,16 +30,12 @@ const FormContainer = () => {
     <>
       <Card>
         {page === 1 && <Page1 />}
-
         {page === 2 && <Page2 />}
-
         {page === 3 && <Page3 />}
-
+      </Card>
+      <Card>
         <Button handleClick={handlePrevious} label={leftButton} />
         <Button handleClick={handleNext} label={rightButton} />
-
-        {/* <button onClick={handlePrevious}>{leftButton}</button> */}
-        {/* <button onClick={handleNext}>{rightButton}</button> */}
       </Card>
     </>
   );
