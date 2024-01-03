@@ -1,11 +1,10 @@
 import "./App.css";
-import FormContainer from "./FormContainer";
+import FormContainerClone2 from "./containers/FormContainerClone2";
 
 function App() {
   return (
     <div className="App">
-      <FormContainer />
-      {/* <ProductContainer /> */}
+      <FormContainerClone2 />
     </div>
   );
 }
