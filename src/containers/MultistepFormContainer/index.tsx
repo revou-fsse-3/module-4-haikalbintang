@@ -1,79 +1,113 @@
 import { useFormik } from 'formik'
-import { Button, Card, Input, Page, Text } from '../../components'
+import { Button, Card, Page } from '../../components'
 import * as yup from 'yup'
 import { useMultistepForm } from '../../hooks'
+import AddressForm from './AddressForm'
+import UserForm from './UserForm'
+import AccountForm from './AccountForm'
+import { useState } from 'react'
 
-interface FormProps {
-  name: string
-  age: number
-  hobby: string
+export interface FormData {
+  fullName: string
+  emailAddress: string
+  dateOfBirth: string
+  streetAddress: string
+  city: string
+  state: string
+  zipCode: string
+  username: string
+  password: string
+}
+
+const INITIAL_DATA: FormData = {
+  fullName: '',
+  emailAddress: '',
+  dateOfBirth: '',
+  streetAddress: '',
+  city: '',
+  state: '',
+  zipCode: '',
+  username: '',
+  password: '',
 }
 
 const MultistepContainer = () => {
-  const { currentStepIndex, steps, isFirstStep, isLastStep, back, next } = useMultistepForm([
-    <div>One</div>,
-    <div>Two</div>,
-    <div>Three</div>,
+  const [data, setData] = useState(INITIAL_DATA)
+  const updateFields = (fields: Partial<FormData>) => {
+    setData((prev) => {
+      return { ...prev, ...fields }
+    })
+  }
+
+  const { currentStepIndex, steps, isFirstStep, isLastStep, back, next, step } = useMultistepForm([
+    <UserForm {...data} updateFields={updateFields} />,
+    <AddressForm {...data} updateFields={updateFields} />,
+    <AccountForm {...data} updateFields={updateFields} />,
   ])
 
   const formMik = useFormik({
     initialValues: {
-      name: '',
-      age: 0,
-      hobby: '',
+      fullName: '',
+      emailAddress: '',
+      dateOfBirth: '',
+      streetAddress: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      username: '',
+      password: '',
     },
-    onSubmit: (values: FormProps) => console.log(values),
+    onSubmit: (values: FormData) => console.log(values),
     validationSchema: yup.object({
-      name: yup.string().required(),
-      age: yup.number().positive().integer().required(),
-      hobby: yup.string().required(),
+      fullName: yup.string().required(),
+      emailAddress: yup.string().required(),
+      dateOfBirth: yup.string().required(),
+      streetAddress: yup.string().required(),
+      city: yup.string().required(),
+      state: yup.string().required(),
+      zipCode: yup.string().required(),
+      username: yup.string().required(),
+      password: yup.string().required(),
     }),
   })
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <Card border>
-        <div className="mt-1 sm:mx-auto sm:w-80 sm:max-w-sm">
-          <form onSubmit={formMik.handleSubmit}>
-            <Page currentPage={currentStepIndex + 1} totalPage={steps.length} />
-            <div>
-              <div>
-                <label>Nama</label>
-                <Input
-                  name={'name'}
-                  value={formMik.values.name}
-                  onChange={formMik.handleChange('name')}
-                  autoFocus
-                  type="text"
-                />
-                <div className="">{formMik.errors.name && <Text>{formMik.errors.name}</Text>}</div>
+        <div className="relative">
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <h1
+              style={{
+                fontSize: '32px',
+                marginBottom: '15px',
+              }}
+            >
+              Form
+            </h1>
+          </div>
+          <div className="mt-1 sm:mx-auto sm:w-80 sm:max-w-sm">
+            <form onSubmit={formMik.handleSubmit}>
+              <Page currentPage={currentStepIndex + 1} totalPage={steps.length} />
+              {currentStepIndex === 0 && <UserForm />}
+              {currentStepIndex === 1 && <AddressForm />}
+              {currentStepIndex === 2 && <AccountForm />}
+              <div className=" flex mt-2 gap-4 justify-end ">
+                {!isFirstStep && <Button onClick={back} label={'Back'} type={'button'} />}
+                {isLastStep ? (
+                  <Button onClick={next} label={'Submit'} type={'submit'} />
+                ) : (
+                  <Button onClick={next} label={'Next'} type={'button'} />
+                )}
               </div>
-              <div>
-                <label>Umur</label>{' '}
-                <Input
-                  name={'age'}
-                  value={formMik.values.age}
-                  onChange={formMik.handleChange('age')}
-                  type="number"
-                  min={1}
-                />
-                {formMik.errors.age && <Text>{formMik.errors.age}</Text>}
-              </div>
-              <div>
-                <label>Hobi</label>{' '}
-                <Input name={'hobby'} value={formMik.values.hobby} onChange={formMik.handleChange('hobby')} />
-                {formMik.errors.hobby && <Text>{formMik.errors.hobby}</Text>}
-              </div>
-            </div>
-            <div className=" flex mt-2 gap-4 justify-end ">
-              {!isFirstStep && <Button onClick={back} label={'Back'} type={'button'} />}
-              {isLastStep ? (
-                <Button onClick={next} label={'Submit'} type={'submit'} />
-              ) : (
-                <Button onClick={next} label={'Next'} type={'button'} />
-              )}
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </Card>
     </div>

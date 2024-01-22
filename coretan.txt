@@ -1,0 +1,18 @@
+<>
+    <h2>Personal Information</h2>
+    <p>Full Name</p>
+    <p>Email Address</p>
+    <p>Date of Birth</p>
+</>
+<>
+    <h2>Address Information</h2>
+    <p>Street Address</p>
+    <p>City</p>
+    <p>State</p>
+    <p>Zip Code</p>
+</>
+<>
+    <h2>Account Information</h2>
+    <p>Username</p>
+    <p>Password</p>
+</>

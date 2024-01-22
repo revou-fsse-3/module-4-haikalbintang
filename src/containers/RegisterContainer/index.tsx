@@ -1,9 +1,10 @@
 import * as yup from 'yup'
 import { useFormik } from 'formik'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { Button, Card, Text } from '../../components'
 
 const RegisterContainer = () => {
+  const navigate = useNavigate()
   const token = localStorage.getItem('token')
 
   const submitSignUp = async (account: { name: string; email: string; password: string }) => {
@@ -21,6 +22,7 @@ const RegisterContainer = () => {
 
     const data = await response.json()
     console.log(data)
+    navigate('../../login')
   }
 
   const formMik = useFormik({
@@ -33,22 +35,15 @@ const RegisterContainer = () => {
       submitSignUp(values)
       console.log(values)
       resetForm()
-      alert('Sip mantap udah bikin akun!')
+      alert('Time to Login')
     },
     validationSchema: yup.object({
-      name: yup.string().min(8, 'Username must be at least 8 characters').required('Please fill the username'),
+      name: yup.string().required('Please fill the username'),
       email: yup
         .string()
-        .min(8, 'ya kali email cuma segitu karakternya')
-        .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Input The proper email coyys')
+        .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Email is invalid')
         .required('Please fill the email address'),
-      password: yup
-        .string()
-        .matches(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/, //char / uppercse / number / symbol / combination /digit
-          'Password combination must be at least 10 characters, include at least one lowercase letter, one uppercase letter, one number, and one special character',
-        )
-        .required('Please fill the password'),
+      password: yup.string().required('Please fill the password'),
     }),
   })
 
@@ -139,8 +134,9 @@ const RegisterContainer = () => {
         </Card>
       </div>
     )
+  } else {
+    return <Navigate to="/category" />
   }
-  return <Navigate to="/" />
 }
 
 export default RegisterContainer

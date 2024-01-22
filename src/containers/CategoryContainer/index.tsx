@@ -11,6 +11,7 @@ interface FormProps {
 interface Category {
   id: string
   name: string
+  email: string
   is_active: boolean
 }
 
@@ -42,7 +43,9 @@ const CategoryContainer = () => {
         },
       })
 
-      // console.log(deleteCategory);
+      const deleteCategory = await response.json()
+
+      console.log(deleteCategory)
       fetchCategories()
     } catch (error) {
       console.log(error)
@@ -74,7 +77,7 @@ const CategoryContainer = () => {
   const handleEdit = (id: string) => async () => {
     try {
       const response = await fetch(`https://mock-api.arikmpt.com/api/category/${id}`, {
-        method: 'GET',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -106,7 +109,7 @@ const CategoryContainer = () => {
   const { errors, values, handleChange, handleSubmit } = formMik
   const { name, is_active } = values
 
-  if (!token) {
+  if (token) {
     return (
       <>
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -183,7 +186,7 @@ const CategoryContainer = () => {
                       margin: '20px',
                     }}
                   >
-                    <Button label={'Sign In'} />
+                    <Button label={'Add'} />
                   </div>
                 </div>
               </form>
@@ -191,7 +194,7 @@ const CategoryContainer = () => {
           </Card>
         </div>
         <div className="bg-white">
-          <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+          <div>
             <div
               style={{
                 display: 'flex',
@@ -211,7 +214,7 @@ const CategoryContainer = () => {
             </div>
 
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-              {/* {categories.map((category: Category, id) => {
+              {categories.map((category: Category, id) => {
                 return (
                   <div key={category.id} className="group relative">
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
@@ -224,25 +227,29 @@ const CategoryContainer = () => {
                     <div className="mt-4 flex justify-between">
                       <div>
                         <h3 className="text-sm text-gray-700">ID: {category.id}</h3>
-                        <p className="mt-1 text-sm text-gray-500">Nama: {category.name}</p>
+                        <p className="mt-1 text-sm text-gray-500">Name: {category.name}</p>
+                        {/* <p className="mt-1 text-sm text-gray-500">Email: {category.email}</p> */}
                       </div>
-                      <p className="text-sm font-medium text-gray-900">{category.is_active}</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        Status: {category.is_active ? 'active' : 'inactive'}
+                      </p>
                     </div>
 
                     <div className="action-group">
-                      <button onClick={handleEdit(category.id)}>Edit</button>
-                      <button onClick={handleDelete(category.id)}>Pecat</button>
+                      <Button color={'bg-green-600'} onClick={handleEdit(category.id)} label={'Edit'} />
+                      <Button color={'bg-red-500'} onClick={handleDelete(category.id)} label={'Delete'} />
                     </div>
                   </div>
                 )
-              })} */}
+              })}
             </div>
           </div>
         </div>
       </>
     )
+  } else {
+    return <Navigate to="/login" />
   }
-  return <Navigate to="/sign-in" />
 }
 
 export default CategoryContainer

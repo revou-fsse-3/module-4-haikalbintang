@@ -1,9 +1,10 @@
 import { Button, Card, Text } from '../../components'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const LoginContainer = () => {
+  const navigate = useNavigate()
   const token = localStorage.getItem('token')
 
   const submitSignIn = async (user: { email: any; password: any }) => {
@@ -24,8 +25,9 @@ const LoginContainer = () => {
       if (data?.data.token) {
         localStorage.setItem('token', data.data.token)
       }
+      navigate('../../category')
     } catch (err) {
-      alert('Cek lagi mas! Email sama Passwordnya!')
+      alert('Please recheck the email and password!')
     }
   }
 
@@ -44,22 +46,18 @@ const LoginContainer = () => {
       email: yup
         .string()
         .min(8)
-        .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Input The proper email')
+        .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Email is invalid')
         .required('Please fill the email address'),
-      password: yup
-        .string()
-        .matches(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
-          'Password combination must be at least 10 characters, include at least one lowercase letter, one uppercase letter, one number, and one special character',
-        )
-        .required('Please fill the password'),
+      password: yup.string().required('Please fill the password'),
     }),
   })
 
   const { errors, values, handleChange, handleSubmit } = formMik
   const { email, password } = values
 
-  if (!token) {
+  if (token) {
+    return <Navigate to="/category" />
+  } else {
     return (
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <Card border>
@@ -130,7 +128,6 @@ const LoginContainer = () => {
       </div>
     )
   }
-  return <Navigate to="/" />
 }
 
 export default LoginContainer
