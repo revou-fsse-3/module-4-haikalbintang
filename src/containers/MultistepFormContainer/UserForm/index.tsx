@@ -1,5 +1,5 @@
-import { useFormik } from 'formik'
-import { Heading2, Input, Text } from '../../../components'
+import { Field, Form, useFormik } from 'formik'
+import { Button, Heading2, Text } from '../../../components'
 import * as yup from 'yup'
 
 interface UserData {
@@ -12,7 +12,7 @@ interface UserFormProps extends UserData {
   updateFields: (fields: Partial<UserData>) => void
 }
 
-const UserForm = ({ fullName, emailAddress, dateOfBirth, updateFields }: UserFormProps) => {
+const UserForm = () => {
   // updateFields({ fullName: 'John Doe', emailAddress: 'john.doe@email.com' })
 
   const formik = useFormik({
@@ -29,50 +29,58 @@ const UserForm = ({ fullName, emailAddress, dateOfBirth, updateFields }: UserFor
     }),
   })
 
-  const { errors, handleBlur } = formik
+  const { errors, touched, getFieldProps } = formik
 
   return (
     <div>
       <Heading2 title={'Personal Information'} />
       <div>
-        <div className="mb-4">
-          <label>Full Name</label>
-          <Input
-            name={'fullName'}
-            value={fullName}
-            onChange={(e) => updateFields({ fullName: e.target.value })}
-            autoFocus
-            type="text"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            required
-          />
-          <div className="text-red-600">{errors.fullName && <Text>{errors.fullName}</Text>}</div>
-        </div>
-        <div className="mb-4">
-          <label>Email Address</label>{' '}
-          <Input
-            name={'emailAddress'}
-            value={emailAddress}
-            onChange={(e) => updateFields({ emailAddress: e.target.value })}
-            onBlur={handleBlur('emailAddress')}
-            type="email"
-            required
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-          <div className="text-red-600">{errors.emailAddress && <Text>{errors.emailAddress}</Text>}</div>
-        </div>
-        <div>
-          <label>Date of Birth</label>{' '}
-          <Input
-            name={'dateOfBirth'}
-            value={dateOfBirth}
-            onChange={(e) => updateFields({ dateOfBirth: e.target.value })}
-            type="date"
-            required
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-          <div className="text-red-600">{errors.dateOfBirth && <Text>{errors.dateOfBirth}</Text>}</div>
-        </div>
+        <Form>
+          <div className="mb-4">
+            <label htmlFor="fullName">Full Name</label>
+            <Field
+              autoFocus
+              id={'fullName'}
+              {...getFieldProps('fullName')}
+              type="text"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              required
+            />
+            {/* <ErrorMessage name="fullName">{msg => <div>{msg}</div>}</ErrorMessage> */}
+            <div className="text-red-600">
+              {errors.fullName && touched.fullName ? <Text>{errors.fullName}</Text> : null}
+            </div>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="emailAddress">Email Address</label>{' '}
+            <Field
+              id={'emailAddress'}
+              {...getFieldProps('emailAddress')}
+              type="email"
+              required
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+            <div className="text-red-600">
+              {errors.emailAddress && touched.emailAddress ? <Text>{errors.emailAddress}</Text> : null}
+            </div>
+          </div>
+          <div>
+            <label htmlFor="dateOfBirth">Date of Birth</label>{' '}
+            <Field
+              id={'dateOfBirth'}
+              {...getFieldProps('dateOfBirth')}
+              type="date"
+              required
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+            <div className="text-red-600">
+              {errors.dateOfBirth && touched.dateOfBirth ? <Text>{errors.dateOfBirth}</Text> : null}
+            </div>
+          </div>
+          <div className=" flex mt-4 gap-4 justify-end ">
+            <Button label={'Submit'} type={'submit'} />
+          </div>
+        </Form>
       </div>
     </div>
   )
