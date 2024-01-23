@@ -1,5 +1,5 @@
 import { Field, Form, useFormik } from 'formik'
-import { Button, Heading2, Text } from '../../../components'
+import { Heading2, Text } from '../../../components'
 import * as yup from 'yup'
 
 interface UserData {
@@ -8,13 +8,11 @@ interface UserData {
   dateOfBirth: string
 }
 
-interface UserFormProps extends UserData {
-  updateFields: (fields: Partial<UserData>) => void
-}
+// interface UserFormProps extends UserData {
+//   updateFields: (fields: Partial<UserData>) => void
+// }
 
 const UserForm = () => {
-  // updateFields({ fullName: 'John Doe', emailAddress: 'john.doe@email.com' })
-
   const formik = useFormik({
     initialValues: {
       fullName: '',
@@ -76,9 +74,6 @@ const UserForm = () => {
             <div className="text-red-600">
               {errors.dateOfBirth && touched.dateOfBirth ? <Text>{errors.dateOfBirth}</Text> : null}
             </div>
-          </div>
-          <div className=" flex mt-4 gap-4 justify-end ">
-            <Button label={'Submit'} type={'submit'} />
           </div>
         </Form>
       </div>

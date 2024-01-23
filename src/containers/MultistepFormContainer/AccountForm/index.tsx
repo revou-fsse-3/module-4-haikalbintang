@@ -1,5 +1,5 @@
-import { useFormik } from 'formik'
-import { Heading2, Input, Text } from '../../../components'
+import { Field, useFormik } from 'formik'
+import { Heading2, Text } from '../../../components'
 import * as yup from 'yup'
 
 interface AccountData {
@@ -7,11 +7,11 @@ interface AccountData {
   password: string
 }
 
-interface AddressFormProps extends AccountData {
-  updateFields: (fields: Partial<AccountData>) => void
-}
+// interface AddressFormProps extends AccountData {
+//   updateFields: (fields: Partial<AccountData>) => void
+// }
 
-const AccountForm = ({ username, password, updateFields }: AddressFormProps) => {
+const AccountForm = () => {
   // updateFields({ fullName: 'John Doe', emailAddress: 'john.doe@email.com' })
 
   const formik = useFormik({
@@ -26,36 +26,37 @@ const AccountForm = ({ username, password, updateFields }: AddressFormProps) => 
     }),
   })
 
-  const { errors } = formik
+  const { errors, touched, getFieldProps } = formik
 
   return (
     <div>
       <Heading2 title={'Account Information'} />
       <div>
         <div className="mb-4">
-          <label>Username</label>
-          <Input
-            name={'username'}
-            value={username}
-            onChange={(e) => updateFields({ username: e.target.value })}
-            autoFocus
+          <label htmlFor="username">Username</label>{' '}
+          <Field
+            id={'username'}
+            {...getFieldProps('username')}
             type="text"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             required
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          <div className="text-red-600">{errors.username && <Text>{errors.username}</Text>}</div>
+          <div className="text-red-600">
+            {errors.username && touched.username ? <Text>{errors.username}</Text> : null}
+          </div>
         </div>
         <div>
-          <label>Password</label>{' '}
-          <Input
-            name={'password'}
-            value={password}
-            onChange={(e) => updateFields({ password: e.target.value })}
+          <label htmlFor="password">Password</label>{' '}
+          <Field
+            id={'password'}
+            {...getFieldProps('password')}
             type="password"
             required
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          <div className="text-red-600">{errors.password && <Text>{errors.password}</Text>}</div>
+          <div className="text-red-600">
+            {errors.password && touched.password ? <Text>{errors.password}</Text> : null}
+          </div>
         </div>
       </div>
     </div>

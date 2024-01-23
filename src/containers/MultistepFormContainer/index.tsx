@@ -1,12 +1,12 @@
-import { Button, Card, Heading1, Heading2, Text } from '../../components'
+import { Button, Card, Heading1, Page } from '../../components'
 // import { useMultistepForm } from '../../hooks'
-// import AddressForm from './AddressForm'
-// import UserForm from './UserForm'
-// import AccountForm from './AccountForm'
-// import { FormEvent, useState } from 'react'
-import { Field, Form, Formik, useFormik } from 'formik'
-import * as yup from 'yup'
+import AddressForm from './AddressForm'
 import UserForm from './UserForm'
+import AccountForm from './AccountForm'
+// import { FormEvent, useState } from 'react'
+import { Form, Formik } from 'formik'
+import * as yup from 'yup'
+import { useMultistepForm } from '../../hooks'
 
 export interface FormData {
   fullName: string
@@ -58,9 +58,9 @@ const MultistepContainer = () => {
   // }
 
   const { currentStepIndex, steps, isFirstStep, isLastStep, back, next, step } = useMultistepForm([
-    <UserForm {...data} updateFields={updateFields} />,
-    <AddressForm {...data} updateFields={updateFields} />,
-    <AccountForm {...data} updateFields={updateFields} />,
+    <UserForm />,
+    <AddressForm />,
+    <AccountForm />,
   ])
 
   // const onSubmit = (e: FormEvent) => {
@@ -71,16 +71,6 @@ const MultistepContainer = () => {
   // }
 
   // const { handleSubmit, isValid, dirty } = formik
-
-  const formik = useFormik({
-    initialValues,
-    onSubmit,
-    validationSchema,
-  })
-
-  const { values, errors, touched, getFieldProps } = formik
-
-  console.log(values)
 
   return (
     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
@@ -98,10 +88,8 @@ const MultistepContainer = () => {
               <Heading1 title={'Form'} />
             </div>
             <div className="mt-1 sm:mx-auto sm:w-80 sm:max-w-sm">
-              <UserForm />
-              {/* <form onSubmit={onSubmit}>
               <Page currentPage={currentStepIndex + 1} totalPage={steps.length} />
-              {step}
+              <Form>{step}</Form>
               <div className=" flex mt-4 gap-4 justify-end ">
                 {!isFirstStep && <Button onClick={back} label={'Back'} type={'button'} />}
                 {isLastStep ? (
@@ -110,7 +98,6 @@ const MultistepContainer = () => {
                   <Button onClick={next} label={'Next'} type={'button'} />
                 )}
               </div>
-            </form> */}
             </div>
           </div>
         </Card>

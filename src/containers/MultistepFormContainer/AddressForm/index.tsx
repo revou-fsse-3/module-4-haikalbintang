@@ -1,5 +1,5 @@
-import { useFormik } from 'formik'
-import { Heading2, Input, Text } from '../../../components'
+import { Field, useFormik } from 'formik'
+import { Heading2, Text } from '../../../components'
 import * as yup from 'yup'
 
 interface AddressData {
@@ -9,13 +9,11 @@ interface AddressData {
   zipCode: string
 }
 
-interface AddressFormProps extends AddressData {
-  updateFields: (fields: Partial<AddressData>) => void
-}
+// interface AddressFormProps extends AddressData {
+//   updateFields: (fields: Partial<AddressData>) => void
+// }
 
-const AddressForm = ({ streetAddress, city, state, zipCode, updateFields }: AddressFormProps) => {
-  // updateFields({ fullName: 'John Doe', emailAddress: 'john.doe@email.com' })
-
+const AddressForm = () => {
   const formik = useFormik({
     initialValues: {
       streetAddress: '',
@@ -32,60 +30,60 @@ const AddressForm = ({ streetAddress, city, state, zipCode, updateFields }: Addr
     }),
   })
 
-  const { errors } = formik
+  const { errors, touched, getFieldProps } = formik
 
   return (
     <div>
       <Heading2 title={'Address Information'} />
       <div>
         <div className="mb-4">
-          <label>Street Address</label>
-          <Input
-            name={'streetAddress'}
-            value={streetAddress}
-            onChange={(e) => updateFields({ streetAddress: e.target.value })}
+          <label htmlFor="streetAddress">Street Address</label>
+          <Field
             autoFocus
+            id={'streetAddress'}
+            {...getFieldProps('streetAddress')}
             type="text"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             required
           />
-          <div className="text-red-600">{errors.streetAddress && <Text>{errors.streetAddress}</Text>}</div>
+          {/* <ErrorMessage name="streetAddress">{msg => <div>{msg}</div>}</ErrorMessage> */}
+          <div className="text-red-600">
+            {errors.streetAddress && touched.streetAddress ? <Text>{errors.streetAddress}</Text> : null}
+          </div>
         </div>
         <div className="mb-4">
-          <label>City</label>{' '}
-          <Input
-            name={'city'}
-            value={city}
-            onChange={(e) => updateFields({ city: e.target.value })}
+          <label htmlFor="city">City</label>
+          <Field
+            id={'city'}
+            {...getFieldProps('city')}
             type="text"
-            required
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            required
           />
-          <div className="text-red-600">{errors.city && <Text>{errors.city}</Text>}</div>
+          {/* <ErrorMessage name="city">{msg => <div>{msg}</div>}</ErrorMessage> */}
+          <div className="text-red-600">{errors.city && touched.city ? <Text>{errors.city}</Text> : null}</div>
         </div>
         <div className="mb-4">
-          <label>State</label>{' '}
-          <Input
-            name={'state'}
-            value={state}
-            onChange={(e) => updateFields({ state: e.target.value })}
-            type="text"
+          <label htmlFor="state">State</label>{' '}
+          <Field
+            id={'state'}
+            {...getFieldProps('state')}
+            type="email"
             required
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          <div className="text-red-600">{errors.state && <Text>{errors.state}</Text>}</div>
+          <div className="text-red-600">{errors.state && touched.state ? <Text>{errors.state}</Text> : null}</div>
         </div>
         <div>
-          <label>Zip Code</label>{' '}
-          <Input
-            name={'zipCode'}
-            value={zipCode}
-            onChange={(e) => updateFields({ zipCode: e.target.value })}
+          <label htmlFor="zipCode">Zip Code</label>{' '}
+          <Field
+            id={'zipCode'}
+            {...getFieldProps('zipCode')}
             type="number"
             required
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          <div className="text-red-600">{errors.zipCode && <Text>{errors.zipCode}</Text>}</div>
+          <div className="text-red-600">{errors.zipCode && touched.zipCode ? <Text>{errors.zipCode}</Text> : null}</div>
         </div>
       </div>
     </div>
