@@ -4,14 +4,23 @@ interface Props {
 
 const Heading1 = ({ title }: Props) => {
   return (
-    <h1
+    <div
       style={{
-        fontSize: '32px',
-        marginBottom: '15px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
-      {title}
-    </h1>
+      <h1
+        style={{
+          fontSize: '32px',
+          marginBottom: '15px',
+        }}
+      >
+        {title}
+      </h1>
+    </div>
   )
 }
 

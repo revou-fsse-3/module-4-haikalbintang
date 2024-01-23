@@ -1,31 +1,7 @@
-import { Field, useFormik } from 'formik'
+import { Field } from 'formik'
 import { Heading2, Text } from '../../../components'
-import * as yup from 'yup'
 
-interface AccountData {
-  username: string
-  password: string
-}
-
-// interface AddressFormProps extends AccountData {
-//   updateFields: (fields: Partial<AccountData>) => void
-// }
-
-const AccountForm = () => {
-  // updateFields({ fullName: 'John Doe', emailAddress: 'john.doe@email.com' })
-
-  const formik = useFormik({
-    initialValues: {
-      username: '',
-      password: '',
-    },
-    onSubmit: (values: AccountData) => console.log(values),
-    validationSchema: yup.object({
-      username: yup.string().required('Username is a required field'),
-      password: yup.string().required('Password is a required field'),
-    }),
-  })
-
+const AccountForm = ({ formik }: any) => {
   const { errors, touched, getFieldProps } = formik
 
   return (
