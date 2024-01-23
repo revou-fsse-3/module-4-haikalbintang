@@ -1,7 +1,6 @@
 import { useFormik } from 'formik'
 import { Heading2, Input, Text } from '../../../components'
 import * as yup from 'yup'
-import { FormData } from '..'
 
 interface AddressData {
   streetAddress: string
@@ -17,7 +16,7 @@ interface AddressFormProps extends AddressData {
 const AddressForm = ({ streetAddress, city, state, zipCode, updateFields }: AddressFormProps) => {
   // updateFields({ fullName: 'John Doe', emailAddress: 'john.doe@email.com' })
 
-  const formMik = useFormik({
+  const formik = useFormik({
     initialValues: {
       streetAddress: '',
       city: '',
@@ -33,6 +32,8 @@ const AddressForm = ({ streetAddress, city, state, zipCode, updateFields }: Addr
     }),
   })
 
+  const { errors } = formik
+
   return (
     <div>
       <Heading2 title={'Address Information'} />
@@ -41,52 +42,50 @@ const AddressForm = ({ streetAddress, city, state, zipCode, updateFields }: Addr
           <label>Street Address</label>
           <Input
             name={'streetAddress'}
-            value={formMik.values.streetAddress}
-            onChange={formMik.handleChange('streetAddress')}
+            value={streetAddress}
+            onChange={(e) => updateFields({ streetAddress: e.target.value })}
             autoFocus
             type="text"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             required
           />
-          <div className="text-red-600">
-            {formMik.errors.streetAddress && <Text>{formMik.errors.streetAddress}</Text>}
-          </div>
+          <div className="text-red-600">{errors.streetAddress && <Text>{errors.streetAddress}</Text>}</div>
         </div>
         <div className="mb-4">
           <label>City</label>{' '}
           <Input
             name={'city'}
-            value={formMik.values.city}
-            onChange={formMik.handleChange('city')}
+            value={city}
+            onChange={(e) => updateFields({ city: e.target.value })}
             type="text"
             required
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          <div className="text-red-600">{formMik.errors.city && <Text>{formMik.errors.city}</Text>}</div>
+          <div className="text-red-600">{errors.city && <Text>{errors.city}</Text>}</div>
         </div>
         <div className="mb-4">
           <label>State</label>{' '}
           <Input
             name={'state'}
-            value={formMik.values.state}
-            onChange={formMik.handleChange('state')}
+            value={state}
+            onChange={(e) => updateFields({ state: e.target.value })}
             type="text"
             required
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          <div className="text-red-600">{formMik.errors.state && <Text>{formMik.errors.state}</Text>}</div>
+          <div className="text-red-600">{errors.state && <Text>{errors.state}</Text>}</div>
         </div>
         <div>
           <label>Zip Code</label>{' '}
           <Input
             name={'zipCode'}
-            value={formMik.values.zipCode}
-            onChange={formMik.handleChange('zipCode')}
-            type="text"
+            value={zipCode}
+            onChange={(e) => updateFields({ zipCode: e.target.value })}
+            type="number"
             required
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          <div className="text-red-600">{formMik.errors.zipCode && <Text>{formMik.errors.zipCode}</Text>}</div>
+          <div className="text-red-600">{errors.zipCode && <Text>{errors.zipCode}</Text>}</div>
         </div>
       </div>
     </div>
