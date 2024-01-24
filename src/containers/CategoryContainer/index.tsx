@@ -1,12 +1,12 @@
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Button, Card, Text } from '../../components'
+import { Button, Card, Heading1, Heading2, Input, Text } from '../../components'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 
 interface FormProps {
-  name?: string
-  is_active?: boolean
+  name: string
+  is_active: boolean
 }
 interface Category {
   id: string
@@ -18,6 +18,8 @@ interface Category {
 const CategoryContainer = () => {
   const token = localStorage.getItem('token')
   const [categories, setCategories] = useState([])
+  const navigate = useNavigate()
+
   const fetchCategories = async () => {
     const response = await fetch('https://mock-api.arikmpt.com/api/category', {
       method: 'GET',
@@ -27,7 +29,6 @@ const CategoryContainer = () => {
     })
     const data = await response.json()
     setCategories(data.data)
-    // console.log(data.data.name);
   }
 
   useEffect(() => {
@@ -92,7 +93,13 @@ const CategoryContainer = () => {
     }
   }
 
-  const formMik = useFormik({
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+
+    navigate('/login')
+  }
+
+  const formik = useFormik({
     initialValues: {
       name: '',
       is_active: true,
@@ -106,113 +113,78 @@ const CategoryContainer = () => {
       is_active: yup.boolean().required(),
     }),
   })
-  const { errors, values, handleChange, handleSubmit } = formMik
-  const { name, is_active } = values
+  const { errors, handleChange, handleSubmit, getFieldProps, touched } = formik
+  // const { name, is_active } = values
 
   if (token) {
     return (
       <>
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
           <Card border>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <h1
-                style={{
-                  fontSize: '32px',
-                  marginBottom: '15px',
-                }}
-              >
-                Category
-              </h1>
-            </div>
-            <div className="mt-1 sm:mx-auto sm:w-80 sm:max-w-sm">
-              <form onSubmit={handleSubmit} className="space-y-6" action="#" method="POST">
-                <div>
-                  <div className="mb-4">
-                    <label>Name</label>
-                    <div>
-                      <input
-                        autoFocus
-                        value={name}
-                        name="name"
-                        type="text"
-                        onChange={handleChange('name')}
-                        required
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                    <div className="text-red-600">{errors.name && <Text>{errors.name}</Text>}</div>
-                  </div>
+            <div className="relative">
+              <Heading1 title={'Categories'} />
+              <div className="absolute top-0 right-0 flex justify-end">
+                <Button onClick={handleLogout} label={'Logout'} color={'bg-indigo-950'} />
+              </div>
+              <div className="mt-1 sm:mx-auto sm:w-80 sm:max-w-sm">
+                <form onSubmit={handleSubmit} className="space-y-6" action="#" method="POST">
                   <div>
-                    <label>Active?</label>
-                    <div className="flex">
-                      <label>
-                        <input
-                          value="true"
-                          name="is_active"
-                          type="radio"
-                          onChange={handleChange('is_active')}
-                          checked={is_active}
-                          className="m-1"
-                        />
-                        Yes
-                      </label>
-                      <label>
-                        <input
-                          value="false"
-                          name="is_active"
-                          type="radio"
-                          onChange={handleChange('is_active')}
-                          checked={is_active}
-                          className="m-1 ml-4"
-                        />
-                        No
-                      </label>
+                    <div className="mb-4">
+                      <label htmlFor="name">Name</label>
+                      <Input
+                        autoFocus
+                        id={'name'}
+                        {...getFieldProps('name')}
+                        type="text"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        required
+                      />
+                      <div className="text-red-600">
+                        {errors.name && touched.name ? <Text>{errors.name}</Text> : null}
+                      </div>
                     </div>
-                    <div className="text-red-600">{errors.is_active && <Text>{errors.is_active}</Text>}</div>
+                    <div>
+                      <label>Active?</label>
+                      <div className="flex">
+                        <label>
+                          <input
+                            value={'true'}
+                            name={'is_active'}
+                            type="radio"
+                            onChange={handleChange('is_active')}
+                            className="m-1"
+                          />
+                          Yes
+                        </label>
+                        <label>
+                          <input
+                            value={'false'}
+                            name={'is_active'}
+                            type="radio"
+                            onChange={handleChange('is_active')}
+                            className="m-1 ml-4"
+                          />
+                          No
+                        </label>
+                      </div>
+                      <div className="text-red-600">
+                        {errors.is_active && touched.is_active ? <Text>{errors.is_active}</Text> : null}
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-center justify-center m-5">
+                      <Button label={'Add'} />
+                    </div>
                   </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      margin: '20px',
-                    }}
-                  >
-                    <Button label={'Add'} />
-                  </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </Card>
         </div>
         <div className="bg-white">
           <div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <h2
-                style={{
-                  fontSize: '24px',
-                  marginBottom: '15px',
-                }}
-              >
-                Member
-              </h2>
+            <div className="flex flex-col items-center justify-center">
+              <Heading2 title="Member" />
             </div>
-
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
               {categories.map((category: Category, id) => {
                 return (
@@ -234,10 +206,10 @@ const CategoryContainer = () => {
                         Status: {category.is_active ? 'active' : 'inactive'}
                       </p>
                     </div>
-
                     <div className="action-group">
                       <Button color={'bg-green-600'} onClick={handleEdit(category.id)} label={'Edit'} />
                       <Button color={'bg-red-500'} onClick={handleDelete(category.id)} label={'Delete'} />
+                      {category.is_active}
                     </div>
                   </div>
                 )

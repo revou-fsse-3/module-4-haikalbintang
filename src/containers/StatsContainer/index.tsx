@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Button, Card, Input } from '../../components'
+import { Button, Card, Heading1, Input, Text } from '../../components'
 import axios from 'axios'
-import { HomeContainer } from '..'
+import { PokemonListContainer } from '..'
 
 const StatsContainer = () => {
   const [pokemonName, setPokemonName] = useState<string>('')
@@ -34,76 +34,50 @@ const StatsContainer = () => {
   }
 
   return (
-    <div>
+    <Card border={false}>
       <Card border>
-        <Card border>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <h1
-              style={{
-                fontSize: '32px',
-                marginBottom: '15px',
-              }}
-            >
-              Pokemon Stats
-            </h1>
-            <p>Name</p>
-            <Input
-              autoFocus
-              onChange={(event) => {
-                setPokemonName(event.target.value)
-              }}
-            />
-            <Button
-              label={'Search Pokemon'}
-              onClick={searchPokemon}
-              style={{
-                margin: '15px',
-              }}
-            />
-          </div>
-        </Card>
-        <Card
-          border={false}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-          }}
-        >
-          {' '}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+        <Heading1 title={'Pokemon Stats'} />
+        {/* <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8"> */}
+        <div className="relative">
+          <div className="mt-1 sm:mx-auto sm:w-80 sm:max-w-sm">
+            <div className="flex flex-col items-center justify-center">
+              <Text className="mb-2">Name</Text>
+              <Input
+                autoFocus
+                id={'pokemonName'}
+                type="text"
+                className="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                onChange={(event) => {
+                  setPokemonName(event.target.value)
+                }}
+              />
+              <div className="m-4">
+                <Button label={'Search Pokemon'} onClick={searchPokemon} />
+              </div>
+            </div>
+          </div>{' '}
+          <div className="flex flex-col items-center justify-center mb-10">
             {!pokemonChosen ? (
-              <h1> Please choose a Pokemon </h1>
+              <Text className="text-indigo-950"> Please input one of the Pokemons below in lowercase </Text>
             ) : (
               <>
                 {' '}
-                <h2>Species: {pokemon.name}</h2>
-                <h2>Type: {pokemon.type}</h2>
-                <img src={pokemon.img} />
-                <h3>HP: {pokemon.hp}</h3>
-                <h3>Attack: {pokemon.attack}</h3>
-                <h3>Defense: {pokemon.defense}</h3>
+                <p className="font-semibold text-lg">
+                  Species: {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+                </p>
+                <p className="font-semibold">Type: {pokemon.type.charAt(0).toUpperCase() + pokemon.type.slice(1)}</p>
+                <img className=" h-40 w-auto" src={pokemon.img} />
+                <p className="font-semibold text-green-600">HP: {pokemon.hp}</p>
+                <p className="font-semibold text-red-600">Attack: {pokemon.attack}</p>
+                <p className="font-semibold text-blue-700">Defense: {pokemon.defense}</p>
               </>
             )}
           </div>
-        </Card>
-        <HomeContainer />
+          <PokemonListContainer />
+        </div>
+        {/* </div> */}
       </Card>
-    </div>
+    </Card>
   )
 }
 

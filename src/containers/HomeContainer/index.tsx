@@ -1,46 +1,21 @@
-import { Card } from '../../components'
-import { useEffect, useState } from 'react'
-
-interface PokemonData {
-  name: string
-}
-
-interface ResponseData {
-  results: PokemonData[]
-}
+import { Card, Heading1 } from '../../components'
 
 const HomeContainer = () => {
-  const [pokemons, setPokemons] = useState<PokemonData[]>([])
-
-  const fetchingPokemon = async () => {
-    const response = await fetch('https://pokeapi.co/api/v2/pokemon/')
-    const data: ResponseData = await response.json()
-    const result = data.results
-    setPokemons(result)
-  }
-
-  useEffect(() => {
-    fetchingPokemon()
-  }, [])
-
   return (
     <Card border={false}>
       <Card border>
-        <h1
-          style={{
-            fontSize: '32px',
-            marginBottom: '15px',
-          }}
-        >
-          Pokemon List
-        </h1>
-        <ul>
-          {pokemons.map((pokemon, index) => (
-            <li key={index}>
-              {index + 1}. {pokemon.name}
-            </li>
-          ))}
-        </ul>
+        <Heading1 title={'Welcome!'} />
+        <div className="flex flex-row justify-around mt-4">
+          <Card border>
+            <p className=" font-bold text-yellow-400">Week-11</p>
+          </Card>
+          <Card border>
+            <p className="font-bold text-green-500">Week-10</p>
+          </Card>
+          <Card border>
+            <p className="font-bold text-red-600">Week-9</p>
+          </Card>
+        </div>
       </Card>
     </Card>
   )

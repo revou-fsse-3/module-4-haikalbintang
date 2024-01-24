@@ -40,14 +40,10 @@ const LoginContainer = () => {
       console.log(values)
       submitSignIn(values)
       resetForm()
-      alert('Gass daftarkan kategorimu')
+      alert('Login successfully! Now you can add Category')
     },
     validationSchema: yup.object({
-      email: yup
-        .string()
-        .min(8)
-        .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Email is invalid')
-        .required('Please fill the email address'),
+      email: yup.string().email('invalid email format').required('Please fill the email address'),
       password: yup.string().required('Please fill the password'),
     }),
   })
@@ -123,6 +119,14 @@ const LoginContainer = () => {
                 </div>
               </div>
             </form>
+            <div className="flex flex-col items-center justify-center">
+              <p className="text-sm">
+                Don't have account?{' '}
+                <a className="text-blue-600" href="/register">
+                  Register
+                </a>{' '}
+              </p>
+            </div>
           </div>
         </Card>
       </div>

@@ -5,7 +5,6 @@ import {
   HomeContainer,
   ProtectContainer,
   StatsContainer,
-  ProductContainer,
   RegisterContainer,
   LoginContainer,
   CategoryContainer,
@@ -26,10 +25,6 @@ function App() {
         {
           path: '/stats',
           element: <StatsContainer />,
-        },
-        {
-          path: '/product',
-          element: <ProductContainer />,
         },
         {
           path: '/register',

@@ -130,6 +130,14 @@ const RegisterContainer = () => {
                 </div>
               </div>
             </form>
+            <div className="flex flex-col items-center justify-center">
+              <p className="text-sm">
+                Already have an account?{' '}
+                <a className="text-blue-600" href="/login">
+                  Login
+                </a>{' '}
+              </p>
+            </div>
           </div>
         </Card>
       </div>
